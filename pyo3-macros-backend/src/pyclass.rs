@@ -861,6 +861,10 @@ fn impl_complex_enum(
         let mut rigged_args = args.clone();
         // Needs to be frozen to disallow `&mut self` methods, which could break a runtime invariant
         // rigged_args.options.frozen = parse_quote!(frozen);
+        // If hash or frozen was specified on the base class, then use it for the variant.
+        if rigged_args.options.hash.is_some() || rigged_args.options.frozen.is_some() {
+            rigged_args.options.frozen = parse_quote!(frozen);
+        }
         // Needs to be subclassable by the variant PyClasses
         rigged_args.options.subclass = parse_quote!(subclass);
         rigged_args
@@ -953,6 +957,12 @@ fn impl_complex_enum(
                 let mut rigged_options: PyClassPyO3Options = parse_quote!(extends = #cls);
                 // If a specific module was given to the base class, use it for all variants.
                 rigged_options.module.clone_from(&args.options.module);
+                // If hash or frozen was specified on the base class, then use it for the variant.
+                if args.options.hash.is_some() || args.options.frozen.is_some() {
+                    rigged_options.frozen = parse_quote!(frozen);
+                }
+                // If the variant was given a specifc name, then use it.
+                // rigged_options.name.clone_from(&variant.get_options().name);
                 rigged_options
             },
         };
