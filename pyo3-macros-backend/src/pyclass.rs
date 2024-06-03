@@ -950,7 +950,7 @@ fn impl_complex_enum(
             class_kind: PyClassKind::Struct,
             // TODO(mkovaxx): propagate variant.options
             options: {
-                let mut rigged_options: PyClassPyO3Options = parse_quote!(extends = #cls, frozen);
+                let mut rigged_options: PyClassPyO3Options = parse_quote!(extends = #cls);
                 // If a specific module was given to the base class, use it for all variants.
                 rigged_options.module.clone_from(&args.options.module);
                 rigged_options
