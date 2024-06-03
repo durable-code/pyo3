@@ -860,7 +860,7 @@ fn impl_complex_enum(
     let args = {
         let mut rigged_args = args.clone();
         // Needs to be frozen to disallow `&mut self` methods, which could break a runtime invariant
-        rigged_args.options.frozen = parse_quote!(frozen);
+        // rigged_args.options.frozen = parse_quote!(frozen);
         // Needs to be subclassable by the variant PyClasses
         rigged_args.options.subclass = parse_quote!(subclass);
         rigged_args
